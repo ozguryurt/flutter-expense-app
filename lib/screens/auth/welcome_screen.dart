@@ -35,7 +35,7 @@ class WelcomeScreen extends StatelessWidget {
 
               // Subtitle
               Text(
-                'Manage your expenses easily',
+                'Track and manage your expenses easily',
                 textAlign: TextAlign.center,
                 style: Theme.of(
                   context,
