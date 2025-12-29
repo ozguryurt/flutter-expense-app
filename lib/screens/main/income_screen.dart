@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-class ExpensesScreen extends StatefulWidget {
-  const ExpensesScreen({super.key});
+class IncomeScreen extends StatefulWidget {
+  const IncomeScreen({super.key});
 
   @override
-  State<ExpensesScreen> createState() => _ExpensesScreenState();
+  State<IncomeScreen> createState() => _IncomeScreenState();
 }
 
-class _ExpensesScreenState extends State<ExpensesScreen> {
+class _IncomeScreenState extends State<IncomeScreen> {
   String _selectedFilter = 'All';
 
   @override
@@ -15,7 +15,7 @@ class _ExpensesScreenState extends State<ExpensesScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          'Expenses',
+          'Income',
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
         backgroundColor: const Color(0xFF1976D2),
@@ -47,13 +47,13 @@ class _ExpensesScreenState extends State<ExpensesScreen> {
                 children: [
                   _buildFilterChip('All'),
                   const SizedBox(width: 8),
-                  _buildFilterChip('Food'),
+                  _buildFilterChip('Salary'),
                   const SizedBox(width: 8),
-                  _buildFilterChip('Transportation'),
+                  _buildFilterChip('Freelance'),
                   const SizedBox(width: 8),
-                  _buildFilterChip('Shopping'),
+                  _buildFilterChip('Investment'),
                   const SizedBox(width: 8),
-                  _buildFilterChip('Entertainment'),
+                  _buildFilterChip('Gift'),
                   const SizedBox(width: 8),
                   _buildFilterChip('Other'),
                 ],
@@ -61,81 +61,49 @@ class _ExpensesScreenState extends State<ExpensesScreen> {
             ),
           ),
 
-          // Expenses List
+          // Income List
           Expanded(
             child: ListView(
               padding: const EdgeInsets.all(16),
               children: [
                 _buildDateSection('Today', [
                   {
-                    'title': 'Migros Market',
-                    'category': 'Food',
-                    'amount': '-₺125.50',
-                    'time': '14:30',
-                    'icon': Icons.restaurant,
-                    'color': const Color(0xFFE53935),
-                  },
-                  {
-                    'title': 'Uber',
-                    'category': 'Transportation',
-                    'amount': '-₺45.00',
-                    'time': '12:15',
-                    'icon': Icons.directions_car,
-                    'color': const Color(0xFFEF5350),
-                  },
-                  {
-                    'title': 'Starbucks',
-                    'category': 'Food',
-                    'amount': '-₺85.00',
+                    'title': 'Salary',
+                    'category': 'Salary',
+                    'amount': '+₺15,000.00',
                     'time': '09:00',
-                    'icon': Icons.local_cafe,
-                    'color': const Color(0xFFE53935),
+                    'icon': Icons.account_balance_wallet,
+                    'color': const Color(0xFF4CAF50),
+                  },
+                  {
+                    'title': 'Freelance Project',
+                    'category': 'Freelance',
+                    'amount': '+₺3,500.00',
+                    'time': '14:30',
+                    'icon': Icons.work,
+                    'color': const Color(0xFF66BB6A),
                   },
                 ]),
                 const SizedBox(height: 24),
                 _buildDateSection('Yesterday', [
                   {
-                    'title': 'Zara',
-                    'category': 'Shopping',
-                    'amount': '-₺350.00',
-                    'time': '18:45',
-                    'icon': Icons.shopping_bag,
-                    'color': const Color(0xFFF44336),
-                  },
-                  {
-                    'title': 'IETT',
-                    'category': 'Transportation',
-                    'amount': '-₺25.00',
-                    'time': '08:30',
-                    'icon': Icons.directions_bus,
-                    'color': const Color(0xFFEF5350),
+                    'title': 'Investment Return',
+                    'category': 'Investment',
+                    'amount': '+₺850.00',
+                    'time': '16:00',
+                    'icon': Icons.trending_up,
+                    'color': const Color(0xFF81C784),
                   },
                 ]),
                 const SizedBox(height: 24),
                 _buildDateSection('2 Days Ago', [
                   {
-                    'title': 'Netflix',
-                    'category': 'Entertainment',
-                    'amount': '-₺99.90',
-                    'time': '15:00',
-                    'icon': Icons.movie,
-                    'color': const Color(0xFFE57373),
-                  },
-                  {
-                    'title': 'A101',
-                    'category': 'Food',
-                    'amount': '-₺165.75',
-                    'time': '13:20',
-                    'icon': Icons.shopping_cart,
-                    'color': const Color(0xFFE53935),
-                  },
-                  {
-                    'title': 'Shell',
-                    'category': 'Transportation',
-                    'amount': '-₺450.00',
-                    'time': '10:00',
-                    'icon': Icons.local_gas_station,
-                    'color': const Color(0xFFEF5350),
+                    'title': 'Gift',
+                    'category': 'Gift',
+                    'amount': '+₺500.00',
+                    'time': '10:15',
+                    'icon': Icons.card_giftcard,
+                    'color': const Color(0xFFA5D6A7),
                   },
                 ]),
               ],
@@ -145,12 +113,12 @@ class _ExpensesScreenState extends State<ExpensesScreen> {
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
-          _showAddExpenseDialog();
+          _showAddIncomeDialog();
         },
         backgroundColor: const Color(0xFF1976D2),
         icon: const Icon(Icons.add, color: Colors.white),
         label: const Text(
-          'New Expense',
+          'New Income',
           style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
       ),
@@ -186,7 +154,7 @@ class _ExpensesScreenState extends State<ExpensesScreen> {
     double total = 0;
     for (var transaction in transactions) {
       final amountStr = (transaction['amount'] as String)
-          .replaceAll('-₺', '')
+          .replaceAll('+₺', '')
           .replaceAll(',', ''); // Binlik ayırıcıları kaldır
       total += double.parse(amountStr);
     }
@@ -206,11 +174,11 @@ class _ExpensesScreenState extends State<ExpensesScreen> {
               ),
             ),
             Text(
-              '-₺${total.toStringAsFixed(2)}',
+              '+₺${total.toStringAsFixed(2)}',
               style: const TextStyle(
                 fontSize: 14,
                 fontWeight: FontWeight.w600,
-                color: Colors.red,
+                color: Color(0xFF4CAF50),
               ),
             ),
           ],
@@ -274,7 +242,7 @@ class _ExpensesScreenState extends State<ExpensesScreen> {
                   style: const TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
-                    color: Colors.red,
+                    color: Color(0xFF4CAF50),
                   ),
                 ),
               ],
@@ -357,10 +325,10 @@ class _ExpensesScreenState extends State<ExpensesScreen> {
     );
   }
 
-  void _showAddExpenseDialog() {
+  void _showAddIncomeDialog() {
     final TextEditingController amountController = TextEditingController();
     final TextEditingController titleController = TextEditingController();
-    String selectedCategory = 'Food';
+    String selectedCategory = 'Salary';
 
     showDialog(
       context: context,
@@ -370,7 +338,7 @@ class _ExpensesScreenState extends State<ExpensesScreen> {
             borderRadius: BorderRadius.circular(20),
           ),
           title: const Text(
-            'Add New Expense',
+            'Add New Income',
             style: TextStyle(fontWeight: FontWeight.bold),
           ),
           content: SingleChildScrollView(
@@ -409,21 +377,14 @@ class _ExpensesScreenState extends State<ExpensesScreen> {
                     ),
                     prefixIcon: const Icon(Icons.category),
                   ),
-                  items:
-                      [
-                            'Food',
-                            'Transportation',
-                            'Shopping',
-                            'Entertainment',
-                            'Other',
-                          ]
-                          .map(
-                            (category) => DropdownMenuItem(
-                              value: category,
-                              child: Text(category),
-                            ),
-                          )
-                          .toList(),
+                  items: ['Salary', 'Freelance', 'Investment', 'Gift', 'Other']
+                      .map(
+                        (category) => DropdownMenuItem(
+                          value: category,
+                          child: Text(category),
+                        ),
+                      )
+                      .toList(),
                   onChanged: (value) {
                     selectedCategory = value!;
                   },
@@ -438,11 +399,11 @@ class _ExpensesScreenState extends State<ExpensesScreen> {
             ),
             ElevatedButton(
               onPressed: () {
-                // Add expense logic here
+                // Add income logic here
                 Navigator.pop(context);
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(
-                    content: Text('Expense added successfully!'),
+                    content: Text('Income added successfully!'),
                     backgroundColor: Color(0xFF1976D2),
                   ),
                 );

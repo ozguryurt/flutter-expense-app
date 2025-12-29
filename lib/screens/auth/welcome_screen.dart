@@ -16,10 +16,11 @@ class WelcomeScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               // App Logo/Icon
-              Icon(
-                Icons.account_balance_wallet,
-                size: 100,
-                color: Theme.of(context).colorScheme.primary,
+              Image.asset(
+                'assets/images/logo.png',
+                height: 100,
+                width: 100,
+                fit: BoxFit.contain,
               ),
               const SizedBox(height: 32),
 

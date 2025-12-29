@@ -26,34 +26,82 @@ class HomeScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Header with total spending
+            // Header with Income and Expense Cards
             Container(
               width: double.infinity,
-              decoration: const BoxDecoration(
-                color: Color(0xFF1976D2),
-                borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(24),
-                  bottomRight: Radius.circular(24),
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  colors: [
+                    const Color(0xFF1976D2),
+                    const Color(0xFF1976D2).withValues(alpha: 0.8),
+                  ],
+                ),
+                borderRadius: const BorderRadius.only(
+                  bottomLeft: Radius.circular(30),
+                  bottomRight: Radius.circular(30),
                 ),
               ),
               padding: const EdgeInsets.all(24),
               child: Column(
                 children: [
-                  Text(
-                    'Total Spending This Month',
-                    style: TextStyle(
-                      color: Colors.white.withValues(alpha: 0.9),
-                      fontSize: 16,
+                  // Balance Card
+                  Container(
+                    padding: const EdgeInsets.all(20),
+                    decoration: BoxDecoration(
+                      color: Colors.white.withValues(alpha: 0.15),
+                      borderRadius: BorderRadius.circular(20),
+                      border: Border.all(
+                        color: Colors.white.withValues(alpha: 0.3),
+                        width: 1,
+                      ),
+                    ),
+                    child: Column(
+                      children: [
+                        Text(
+                          'Total Balance',
+                          style: TextStyle(
+                            color: Colors.white.withValues(alpha: 0.9),
+                            fontSize: 14,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                        const Text(
+                          '₺16,550.00',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 32,
+                            fontWeight: FontWeight.bold,
+                            letterSpacing: 0.5,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
-                  const SizedBox(height: 8),
-                  const Text(
-                    '₺2,450.00',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 36,
-                      fontWeight: FontWeight.bold,
-                    ),
+                  const SizedBox(height: 20),
+                  // Income and Expense Cards
+                  Row(
+                    children: [
+                      Expanded(
+                        child: _buildSummaryCard(
+                          'Income',
+                          '₺19,000.00',
+                          const Color(0xFF4CAF50),
+                          Icons.trending_up,
+                        ),
+                      ),
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: _buildSummaryCard(
+                          'Expenses',
+                          '₺2,450.00',
+                          const Color(0xFFE53935),
+                          Icons.trending_down,
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),
@@ -98,7 +146,7 @@ class HomeScreen extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       const Text(
-                        'Recent Expenses',
+                        'Recent Transactions',
                         style: TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
@@ -237,15 +285,89 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
+  Widget _buildSummaryCard(
+    String label,
+    String amount,
+    Color color,
+    IconData icon,
+  ) {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.white.withValues(alpha: 0.15),
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(
+          color: Colors.white.withValues(alpha: 0.3),
+          width: 1,
+        ),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Container(
+                padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: color.withValues(alpha: 0.2),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Icon(icon, color: Colors.white, size: 20),
+              ),
+              const Spacer(),
+            ],
+          ),
+          const SizedBox(height: 12),
+          Text(
+            label,
+            style: TextStyle(
+              color: Colors.white.withValues(alpha: 0.8),
+              fontSize: 12,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+          const SizedBox(height: 4),
+          Text(
+            amount,
+            style: const TextStyle(
+              color: Colors.white,
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   Widget _buildRecentTransactions() {
     final transactions = [
+      {
+        'title': 'Salary',
+        'category': 'Salary',
+        'amount': '+₺15,000.00',
+        'date': 'Today',
+        'icon': Icons.account_balance_wallet,
+        'color': const Color(0xFF4CAF50),
+        'type': 'income',
+      },
       {
         'title': 'Migros Market',
         'category': 'Food',
         'amount': '-₺125.50',
         'date': 'Today',
         'icon': Icons.restaurant,
-        'color': const Color(0xFF1976D2),
+        'color': const Color(0xFFE53935),
+        'type': 'expense',
+      },
+      {
+        'title': 'Freelance Project',
+        'category': 'Freelance',
+        'amount': '+₺3,500.00',
+        'date': 'Today',
+        'icon': Icons.work,
+        'color': const Color(0xFF4CAF50),
+        'type': 'income',
       },
       {
         'title': 'Uber',
@@ -253,7 +375,8 @@ class HomeScreen extends StatelessWidget {
         'amount': '-₺45.00',
         'date': 'Today',
         'icon': Icons.directions_car,
-        'color': const Color(0xFF42A5F5),
+        'color': const Color(0xFFEF5350),
+        'type': 'expense',
       },
       {
         'title': 'Zara',
@@ -261,41 +384,60 @@ class HomeScreen extends StatelessWidget {
         'amount': '-₺350.00',
         'date': 'Yesterday',
         'icon': Icons.shopping_bag,
-        'color': const Color(0xFF64B5F6),
+        'color': const Color(0xFFF44336),
+        'type': 'expense',
       },
       {
-        'title': 'Netflix',
-        'category': 'Entertainment',
-        'amount': '-₺99.90',
-        'date': '2 days ago',
-        'icon': Icons.movie,
-        'color': const Color(0xFF90CAF9),
+        'title': 'Investment Return',
+        'category': 'Investment',
+        'amount': '+₺850.00',
+        'date': 'Yesterday',
+        'icon': Icons.trending_up,
+        'color': const Color(0xFF4CAF50),
+        'type': 'income',
       },
     ];
 
     return Column(
       children: transactions.map((transaction) {
+        final isIncome = transaction['type'] == 'income';
+        final amountColor = isIncome
+            ? const Color(0xFF4CAF50)
+            : const Color(0xFFE53935);
+
         return Container(
           margin: const EdgeInsets.only(bottom: 12),
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
-            color: Colors.grey[50],
-            borderRadius: BorderRadius.circular(12),
-            border: Border.all(color: Colors.grey[200]!),
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(
+              color: (transaction['color'] as Color).withValues(alpha: 0.2),
+              width: 1,
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withValues(alpha: 0.05),
+                blurRadius: 8,
+                offset: const Offset(0, 2),
+              ),
+            ],
           ),
           child: Row(
             children: [
               Container(
-                width: 48,
-                height: 48,
+                width: 52,
+                height: 52,
                 decoration: BoxDecoration(
-                  color: (transaction['color'] as Color).withValues(alpha: 0.1),
-                  borderRadius: BorderRadius.circular(12),
+                  color: (transaction['color'] as Color).withValues(
+                    alpha: 0.15,
+                  ),
+                  borderRadius: BorderRadius.circular(14),
                 ),
                 child: Icon(
                   transaction['icon'] as IconData,
                   color: transaction['color'] as Color,
-                  size: 24,
+                  size: 26,
                 ),
               ),
               const SizedBox(width: 16),
@@ -311,20 +453,57 @@ class HomeScreen extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 4),
-                    Text(
-                      '${transaction['category']} • ${transaction['date']}',
-                      style: TextStyle(fontSize: 13, color: Colors.grey[600]),
+                    Row(
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 8,
+                            vertical: 2,
+                          ),
+                          decoration: BoxDecoration(
+                            color: amountColor.withValues(alpha: 0.1),
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: Text(
+                            transaction['category'] as String,
+                            style: TextStyle(
+                              fontSize: 11,
+                              color: amountColor,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 8),
+                        Text(
+                          transaction['date'] as String,
+                          style: TextStyle(
+                            fontSize: 12,
+                            color: Colors.grey[600],
+                          ),
+                        ),
+                      ],
                     ),
                   ],
                 ),
               ),
-              Text(
-                transaction['amount'] as String,
-                style: const TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.red,
-                ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  Text(
+                    transaction['amount'] as String,
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      color: amountColor,
+                    ),
+                  ),
+                  const SizedBox(height: 2),
+                  Icon(
+                    isIncome ? Icons.arrow_upward : Icons.arrow_downward,
+                    size: 14,
+                    color: amountColor,
+                  ),
+                ],
               ),
             ],
           ),
